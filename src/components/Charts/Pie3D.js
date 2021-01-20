@@ -2,7 +2,9 @@ import React from "react";
 import FusionCharts from "fusioncharts";
 import charts from "fusioncharts/fusioncharts.charts";
 import ReactFusioncharts from "react-fusioncharts";
+import Fusion from "fusioncharts/themes/fusioncharts.theme.fusion";
 
+ReactFusioncharts.fcRoot(FusionCharts, charts, Fusion);
 
 const Pie3D = (data) => {
   //console.log(data);

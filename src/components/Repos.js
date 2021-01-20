@@ -8,41 +8,55 @@ const Repos = () => {
     //console.log(repos);
     let languages = repos.reduce((total, item) => {
         //console.log(item);
-        const {language} = item;
+        const {language, stargazers_count} = item;
         if (!language) return total;
         if (!total[language]) {
-            total[language] = {label: language, value: 1};
+            total[language] = {
+                label: language, value: 1,
+                stars: stargazers_count,
+            };
         } else {
             total[language] = {
                 ...total[language],
-                value: total[language].value + 1
+                value: total[language].value + 1,
+                stars: total[language].stars + stargazers_count,
             }
         }
         return total
     }, {});
     //console.log(languages)
-    languages = Object.values(languages).sort((a, b) => {
+    const mostUsed = Object.values(languages).sort((a, b) => {
         return b.value - a.value;
     }).slice(0, 5);
-    // const chartData = [
-    //     {
-    //         label: "HTML",
-    //         value: "15"
-    //     },
-    //     {
-    //         label: "CSS",
-    //         value: "28"
-    //     },
-    //     {
-    //         label: "JavaScript",
-    //         value: "57"
-    //     }
-    // ];
+    const mostPopular = Object.values(languages)
+        .sort((a,b)=>{
+            return b.stars = a.stars;
+        })
+        .map((item)=>{
+            return{...item,value:item.stars};
+        }).slice(0,5);
+    const chartData = [
+        {
+            label: "HTML",
+            value: "15"
+        },
+        {
+            label: "CSS",
+            value: "28"
+        },
+        {
+            label: "JavaScript",
+            value: "57"
+        }
+    ];
     return <section className="section">
         <Wrapper className="section-center">
             <div className="div">
-                <Pie3D data={languages}/>
+                <Pie3D data={mostUsed}/>
                 {/*<ExampleChart data={chartData}/>*/}
+                <div></div>
+                <Doughnut2D data={mostPopular}/>
+                <Column3D data={chartData}/>
             </div>
         </Wrapper>
     </section>;
@@ -54,6 +68,9 @@ const Wrapper = styled.div`
   gap: 2rem;
   .div{
     height: 300px;
+    div{
+      padding: 0.5rem 0;
+    }
   }
   @media (min-width: 800px) {
     grid-template-columns: 1fr 1fr;
