@@ -14,8 +14,44 @@ const GithubProvider = ({children}) => {
     const [repos, setRepos] = React.useState(mockRepos);
     const [followers, setFollowers] = React.useState(mockFollowers);
 
+    const [requests, setRequests] = React.useState(0);
+    const [loading, setLoading] = React.useState(false);
+
+    const [error, setError] = useState({show: false, msg: ""});
+
+    const searchGithubUser = async (user) => {
+        toggleError();
+        const response = await axios(`${rootUrl}/users/${user}`)
+            .catch(err=>console.log(err));
+        console.log(response);
+        if (response){
+            setGithubUser(response.data);
+        } else {
+            toggleError(true, "user not found");
+        }
+    }
+
+    const checkRequests = () => {
+        axios(`${rootUrl}/rate_limit`)
+            .then(({data}) => {
+                let {rate: {remaining},} = data;
+                setRequests(remaining);
+                if (remaining === 0) {
+                    toggleError(true,"sorry, hourly limit ended");
+                }
+            }).catch((err => console.log(err)))
+    };
+
+    function toggleError({show = false, msg = ''}) {
+        setError({show, msg});
+    }
+
+    useEffect(checkRequests, []);
+
     return <GithubContext.Provider
-        value={{githubUser, repos, followers
+        value={{
+            githubUser, repos, followers, requests, error,
+            searchGithubUser,
         }}>
         {children}
     </GithubContext.Provider>

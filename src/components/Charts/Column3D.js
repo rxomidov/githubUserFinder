@@ -3,9 +3,9 @@ import FusionCharts from "fusioncharts";
 import charts from "fusioncharts/fusioncharts.charts";
 import ReactFusioncharts from "react-fusioncharts";
 
-import Candy from "fusioncharts/themes/fusioncharts.theme.candy";
+import Fusion from "fusioncharts/themes/fusioncharts.theme.fusion";
 
-ReactFusioncharts.fcRoot(FusionCharts, charts, Candy);
+ReactFusioncharts.fcRoot(FusionCharts, charts, Fusion);
 
 const Column3D = (data) => {
   //console.log(data);
@@ -14,11 +14,12 @@ const Column3D = (data) => {
 
   const dataSource = {
     chart: {
-      caption: "Stars Per Languages",
-      decimals: 0,
-      showPercentValues: 0,
-      pieRadius: "55%",
-      theme: "candy"
+      caption: "Most Popular",
+      yaxisName: "Stars",
+      xaxisName: "Repos",
+      yAxisNameFontSize: "16px",
+      xAxisNameFontSize: "16px",
+      theme: "fusion"
     },
     data: data.data
   };
