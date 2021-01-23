@@ -20,15 +20,29 @@ const GithubProvider = ({children}) => {
     const [error, setError] = useState({show: false, msg: ""});
 
     const searchGithubUser = async (user) => {
-        toggleError();
+        //toggleError();
+        setLoading(true);
         const response = await axios(`${rootUrl}/users/${user}`)
             .catch(err=>console.log(err));
-        console.log(response);
+        //console.log(response);
         if (response){
             setGithubUser(response.data);
+            const {login, followers_url} = response.data;
+
+            axios(`${rootUrl}/users/${login}/repos?per_page=100`)
+                .then((response)=>{
+                    setRepos(response.data)
+                });
+            axios(`${followers_url}?per_page=100`)
+                .then((response)=>{
+                    setFollowers(response.data)
+                    console.log(response);
+                });
         } else {
-            toggleError(true, "user not found");
+            //toggleError(true, "user not found");
         }
+        checkRequests();
+        setLoading(false);
     }
 
     const checkRequests = () => {
@@ -51,7 +65,7 @@ const GithubProvider = ({children}) => {
     return <GithubContext.Provider
         value={{
             githubUser, repos, followers, requests, error,
-            searchGithubUser,
+            searchGithubUser, loading,
         }}>
         {children}
     </GithubContext.Provider>

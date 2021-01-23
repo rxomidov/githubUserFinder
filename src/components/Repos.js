@@ -79,10 +79,10 @@ const Repos = () => {
 const Wrapper = styled.div`
   display: grid;
   justify-items: center;
-  gap: 2rem;
+  gap: 2rem;  
   height: 50rem;
   .div{
-    height: 300px;
+    height: 350px;
     div{
       padding: 0.5rem 0;
     }

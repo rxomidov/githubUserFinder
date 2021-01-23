@@ -19,7 +19,7 @@ const Card = () => {
         <div className="links">
             <p><MdBusiness/>{company || "no company"}</p>
             <p><MdLocationOn/>{location || "earth"}</p>
-            <a href={`https://${blog}`}>
+            <a target="_blank" rel="noreferrer"  href={`https://${blog}`}>
                 <MdLink/>{blog}
             </a>
         </div>
